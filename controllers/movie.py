@@ -83,20 +83,25 @@ def update_movie():
             except:
                 err = 'Id must be integer'
                 return make_response(jsonify(error=err), 400)
-            if 'year' in data.keys():
-                try:
-                    year = int(data['year'])
-                except:
-                    err = 'Year must be integer'
-                    return make_response(jsonify(error=err), 400)
-                # use this for 200 response code
-                try:
+            try:
+                if 'year' in data.keys():
+                    try:
+                        year = int(data['year'])
+                    except:
+                        err = 'Year must be integer'
+                        return make_response(jsonify(error=err), 400)
+                    # use this for 200 response code
                     upd_record = Movie.update(row_id, **data)
                     upd_movie = {k: v for k, v in upd_record.__dict__.items() if k in MOVIE_FIELDS}
                     return make_response(jsonify(upd_movie), 200)
-                except:
-                    err = 'Such movie id record should exist'
-                    return make_response(jsonify(error=err), 400)
+                else:
+                    upd_record = Movie.update(row_id, **data)
+                    upd_movie = {k: v for k, v in upd_record.__dict__.items() if k in MOVIE_FIELDS}
+                    return make_response(jsonify(upd_movie), 200)
+            except:
+                err = 'Such movie id record should exist'
+                return make_response(jsonify(error=err), 400)
+
     else:
         err = 'Inputted fields should exist'
         return make_response(jsonify(error=err), 400)

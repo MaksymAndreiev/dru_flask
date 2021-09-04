@@ -56,12 +56,13 @@ def add_actor():
     if all(item in ACTOR_FIELDS for item in data.keys()):  # Inputted fields should exist
         if 'date_of_birth' in data.keys():
             data_of_birth = data['date_of_birth']
-            if data_of_birth == dt.strptime(data_of_birth, DATE_FORMAT).strftime(DATE_FORMAT):
+            try:
+                dt.strptime(data_of_birth, DATE_FORMAT).strftime(DATE_FORMAT)
                 # use this for 200 response code
                 new_record = Actor.create(**data)
                 new_actor = {k: v for k, v in new_record.__dict__.items() if k in ACTOR_FIELDS}
                 return make_response(jsonify(new_actor), 200)
-            else:
+            except ValueError:
                 err = 'Date of birth should be in format DATE_FORMAT'
                 return make_response(jsonify(error=err), 400)
     else:
@@ -92,6 +93,10 @@ def update_actor():
                         upd_record = Actor.update(row_id, **data)
                         upd_actor = {k: v for k, v in upd_record.__dict__.items() if k in ACTOR_FIELDS}
                         return make_response(jsonify(upd_actor), 200)
+                else:
+                    upd_record = Actor.update(row_id, **data)
+                    upd_actor = {k: v for k, v in upd_record.__dict__.items() if k in ACTOR_FIELDS}
+                    return make_response(jsonify(upd_actor), 200)
             except:
                 err = 'Such actor id record should exist'
                 return make_response(jsonify(error=err), 400)
@@ -132,6 +137,7 @@ def actor_add_relation():
     Add a movie to actor's filmography
     """
     data = get_request_data()
+    print(data)
     ### YOUR CODE HERE ###
     if 'id' and 'relation_id' in data.keys():
         try:
@@ -142,6 +148,7 @@ def actor_add_relation():
             return make_response(jsonify(error=err), 400)
         # use this for 200 response code
         movie = Movie.query.filter_by(id=movie_id).first()
+        print(movie)
         actor = Actor.add_relation(actor_id, movie)  # add relation here
         rel_actor = {k: v for k, v in actor.__dict__.items() if k in ACTOR_FIELDS}
         rel_actor['filmography'] = str(actor.filmography)
