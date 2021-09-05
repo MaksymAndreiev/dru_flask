@@ -55,9 +55,9 @@ def add_actor():
     ### YOUR CODE HERE ###
     if all(item in ACTOR_FIELDS for item in data.keys()):  # Inputted fields should exist
         if 'date_of_birth' in data.keys():
-            data_of_birth = data['date_of_birth']
+            date_of_birth = data['date_of_birth']
             try:
-                dt.strptime(data_of_birth, DATE_FORMAT).strftime(DATE_FORMAT)
+                dt.strptime(date_of_birth, DATE_FORMAT).strftime(DATE_FORMAT)
                 # use this for 200 response code
                 new_record = Actor.create(**data)
                 new_actor = {k: v for k, v in new_record.__dict__.items() if k in ACTOR_FIELDS}
