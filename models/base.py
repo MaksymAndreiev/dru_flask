@@ -50,7 +50,7 @@ class Model(object):
         obj = cls.query.filter_by(id=row_id).first()
         db.session.delete(obj)
         db.session.commit()
-        if obj is not None:
+        if obj is None:
             obj = 1
         else:
             obj = 0
