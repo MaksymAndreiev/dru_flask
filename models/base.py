@@ -47,10 +47,10 @@ class Model(object):
         row_id: record id
         return: int (1 if deleted else 0)
         """
-        obj = cls.query.filter_by(id=row_id).first()
+        obj = db.session.query(cls).filter(cls.id == row_id).first()
         db.session.delete(obj)
         db.session.commit()
-        if obj is None:
+        if db.session.query(cls).filter(cls.id == row_id).first() is None:
             obj = 1
         else:
             obj = 0
