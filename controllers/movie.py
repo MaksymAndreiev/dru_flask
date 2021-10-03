@@ -1,7 +1,5 @@
 from flask import jsonify, make_response
 
-from ast import literal_eval
-
 from models.actor import Actor
 from models.movie import Movie
 from settings.constants import MOVIE_FIELDS
@@ -55,6 +53,9 @@ def add_movie():
         if 'year' in data.keys():
             try:
                 year = int(data['year'])
+                if year > 2021:
+                    err = 'Wrong year format'
+                    return make_response(jsonify(error=err), 400)
             except:
                 err = 'Year must be integer'
                 return make_response(jsonify(error=err), 400)
@@ -87,6 +88,9 @@ def update_movie():
                 if 'year' in data.keys():
                     try:
                         year = int(data['year'])
+                        if year > 2021:
+                            err = 'Wrong year format'
+                            return make_response(jsonify(error=err), 400)
                     except:
                         err = 'Year must be integer'
                         return make_response(jsonify(error=err), 400)
