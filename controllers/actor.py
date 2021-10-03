@@ -122,7 +122,7 @@ def delete_actor():
             err = 'Id must be integer'
             return make_response(jsonify(error=err), 400)
         try:
-            delete_record = Actor.delete(row_id)
+            Actor.delete(row_id)
             # use this for 200 response code
             msg = 'Record successfully deleted'
             return make_response(jsonify(message=msg), 200)
