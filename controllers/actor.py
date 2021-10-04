@@ -161,6 +161,14 @@ def actor_add_relation():
     else:
         err = 'No id specified'
         return make_response(jsonify(error=err), 400)
+        obj = Actor.query.filter_by(id=row_id).first()
+        try:
+            actor = {k: v for k, v in obj.__dict__.items() if k in ACTOR_FIELDS}
+        except:
+            err = 'Record with such id does not exist'
+            return make_response(jsonify(error=err), 400)
+
+        return make_response(jsonify(actor), 200)
     ### END CODE HERE ###
 
 
