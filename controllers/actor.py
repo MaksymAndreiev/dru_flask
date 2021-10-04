@@ -21,11 +21,11 @@ def get_all_actors():
     return make_response(jsonify(actors), 200)
 
 
-def get_actor_by_id():
+def get_actor_by_id(data):
     """
     Get record by id
     """
-    data = get_request_data()
+    # data = get_request_data()
     if 'id' in data.keys():
         try:
             row_id = int(data['id'])
@@ -45,6 +45,15 @@ def get_actor_by_id():
     else:
         err = 'No id specified'
         return make_response(jsonify(error=err), 400)
+
+        obj = Actor.query.filter_by(id=row_id).first()
+        try:
+            actor = {k: v for k, v in obj.__dict__.items() if k in ACTOR_FIELDS}
+        except:
+            err = 'Record with such id does not exist'
+            return make_response(jsonify(error=err), 400)
+
+        return make_response(jsonify(actor), 200)
 
 
 def add_actor():
@@ -161,14 +170,6 @@ def actor_add_relation():
     else:
         err = 'No id specified'
         return make_response(jsonify(error=err), 400)
-        obj = Actor.query.filter_by(id=row_id).first()
-        try:
-            actor = {k: v for k, v in obj.__dict__.items() if k in ACTOR_FIELDS}
-        except:
-            err = 'Record with such id does not exist'
-            return make_response(jsonify(error=err), 400)
-
-        return make_response(jsonify(actor), 200)
     ### END CODE HERE ###
 
 
