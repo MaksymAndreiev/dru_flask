@@ -153,9 +153,9 @@ def movie_add_relation():
             # use this for 200 response code
             actor = Actor.query.filter_by(id=actor_id).first()
             movie = Movie.add_relation(movie_id, actor)  # add relation here
-            rel_actor = {k: v for k, v in actor.__dict__.items() if k in MOVIE_FIELDS}
-            rel_actor['filmography'] = str(actor.filmography)
-            return make_response(jsonify(rel_actor), 200)
+            rel_movie = {k: v for k, v in actor.__dict__.items() if k in MOVIE_FIELDS}
+            rel_movie['cast'] = str(movie.cast)
+            return make_response(jsonify(rel_movie), 200)
         except:
             err = 'Such actor or movie id record should exist'
             return make_response(jsonify(error=err), 400)
