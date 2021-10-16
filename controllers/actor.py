@@ -21,11 +21,11 @@ def get_all_actors():
     return make_response(jsonify(actors), 200)
 
 
-def get_actor_by_id(data):
+def get_actor_by_id():
     """
     Get record by id
     """
-    # data = get_request_data()
+    data = get_request_data()
     if 'id' in data.keys():
         try:
             row_id = int(data['id'])
