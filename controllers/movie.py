@@ -10,11 +10,11 @@ def get_all_movies():
     """
     Get list of all records
     """
-    all_movies = Actor.query.all()
+    all_movies = Movie.query.all()
     movies = []
-    for actor in all_movies:
-        act = {k: v for k, v in actor.__dict__.items() if k in MOVIE_FIELDS}
-        movies.append(act)
+    for movie in all_movies:
+        mov = {k: v for k, v in movie.__dict__.items() if k in MOVIE_FIELDS}
+        movies.append(mov)
     return make_response(jsonify(movies), 200)
 
 
