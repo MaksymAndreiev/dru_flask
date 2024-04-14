@@ -63,6 +63,8 @@ def add_actor():
     data = get_request_data()
     ### YOUR CODE HERE ###
     if all(item in ACTOR_FIELDS for item in data.keys()):  # Inputted fields should exist
+        if len(data.keys()) != len(ACTOR_FIELDS) - 1:  # All required fields should be specified
+            return make_response(jsonify(error='All required fields should be specified'), 400)
         if 'date_of_birth' in data.keys():
             date_of_birth = data['date_of_birth']
             try:
