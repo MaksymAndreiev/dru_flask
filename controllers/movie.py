@@ -50,6 +50,8 @@ def add_movie():
     """
     data = get_request_data()
     if all(item in MOVIE_FIELDS for item in data.keys()):  # Inputted fields should exist
+        if len(data.keys()) != len(MOVIE_FIELDS) - 1:  # All required fields should be specified
+            return make_response(jsonify(error='All required fields should be specified'), 400)
         if 'year' in data.keys():
             try:
                 year = int(data['year'])
